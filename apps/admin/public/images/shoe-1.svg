@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <defs>
+    <linearGradient id="g1" x1="0" x2="1">
+      <stop offset="0" stop-color="#111827"/>
+      <stop offset="1" stop-color="#374151"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="#0b1220"/>
+  <g transform="translate(40,60)">
+    <path d="M40 220 C120 150, 320 120, 420 160 C460 180, 520 200, 540 210 L540 260 L40 260 Z" fill="#111827" stroke="#fff" stroke-opacity="0.06"/>
+    <path d="M70 200 C120 160, 300 130, 410 160 C445 175, 515 195, 535 205" fill="none" stroke="#f3f4f6" stroke-width="6" stroke-linecap="round" stroke-opacity="0.95"/>
+    <circle cx="160" cy="210" r="8" fill="#f3f4f6" opacity="0.9"/>
+    <circle cx="240" cy="200" r="6" fill="#f3f4f6" opacity="0.8"/>
+  </g>
+  <text x="24" y="36" fill="#f9fafb" font-family="Arial, Helvetica, sans-serif" font-size="22">Shoe 1</text>
+</svg>

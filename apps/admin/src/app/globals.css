@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background:
+      42 50% 96%;
+    --foreground:
+      221 39% 11%;
+    --card:
+      0 0% 100%;
+    --card-foreground:
+      221 39% 11%;
+    --popover:
+      0 0% 100%;
+    --popover-foreground:
+      221 39% 11%;
+    --primary:
+      24 95% 53%;
+    --primary-foreground:
+      0 0% 100%;
+    --secondary:
+      33 100% 96%;
+    --secondary-foreground:
+      221 39% 11%;
+    --muted:
+      36 33% 91%;
+    --muted-foreground:
+      215 16% 47%;
+    --accent:
+      173 80% 40%;
+    --accent-foreground:
+      0 0% 100%;
+    --destructive:
+      0 84.2% 60.2%;
+    --destructive-foreground:
+      0 0% 98%;
+    --border:
+      32 28% 84%;
+    --input:
+      32 28% 84%;
+    --ring:
+      24 95% 53%;
+    --radius:
+      0.5rem;
+    --chart-1:
+      24 95% 53%;
+    --chart-2:
+      173 80% 40%;
+    --chart-3:
+      221 39% 11%;
+    --chart-4:
+      45 93% 58%;
+    --chart-5:
+      339 90% 51%;
+  }
+
+  .dark {
+    --background:
+      219 49% 8%;
+    --foreground:
+      210 40% 98%;
+    --card:
+      221 39% 11%;
+    --card-foreground:
+      210 40% 98%;
+    --popover:
+      221 39% 11%;
+    --popover-foreground:
+      210 40% 98%;
+    --primary:
+      24 95% 53%;
+    --primary-foreground:
+      0 0% 100%;
+    --secondary:
+      217 33% 17%;
+    --secondary-foreground:
+      210 40% 98%;
+    --muted:
+      217 33% 17%;
+    --muted-foreground:
+      215 20% 65%;
+    --accent:
+      173 80% 40%;
+    --accent-foreground:
+      0 0% 100%;
+    --destructive:
+      0 62.8% 30.6%;
+    --destructive-foreground:
+      0 0% 98%;
+    --border:
+      215 28% 25%;
+    --input:
+      215 28% 25%;
+    --ring:
+      24 95% 53%;
+    --chart-1:
+      24 95% 53%;
+    --chart-2:
+      173 80% 40%;
+    --chart-3:
+      45 93% 58%;
+    --chart-4:
+      339 90% 51%;
+    --chart-5:
+      258 90% 66%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+  }
+}
+
+@layer utilities {
+  .step {
+    counter-increment: step;
+  }
+
+  .step:before {
+    @apply absolute w-9 h-9 bg-muted rounded-full font-mono font-medium text-center text-base inline-flex items-center justify-center -indent-px border-4 border-background;
+    @apply ml-[-50px] mt-[-4px];
+    content: counter(step);
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    @apply px-4;
+  }
+}
