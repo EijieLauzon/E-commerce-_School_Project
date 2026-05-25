@@ -31,7 +31,19 @@ Same env vars pattern; see `apps/storefront/.env.example`.
 
 ## If you see `404: NOT_FOUND` (Vercel white page)
 
-1. **Root Directory** is wrong (most common). Use `apps/admin` or `apps/storefront`, not the repo root and not `agents-convincing-lemming/...`.
-2. **Output Directory** must be **empty** for Next.js.
-3. Open **Deployments** → latest **Ready** deployment → click **Visit** (not an old URL).
-4. Add `DATABASE_URL` and redeploy if the build log shows Prisma errors.
+This is **Vercel’s** error (not your app). The deploy has no Next.js routes.
+
+1. **Root Directory** → `apps/admin` (admin project) or `apps/storefront` (shop).  
+   **Not** blank, **not** `agents-convincing-lemming/...`.
+2. **Output Directory** → leave **completely empty** (delete `.next`, `out`, or `public` if set).
+3. **Install Command** → `npm install --legacy-peer-deps` (or use defaults; `apps/admin/vercel.json` sets this).
+4. Test: open `https://YOUR-URL/login` — if that is also 404, settings are still wrong.
+5. **Deployments** → only open **Visit** on a **Ready** (green) deployment.
+6. Add `DATABASE_URL` + `JWT_SECRET_KEY`, then **Redeploy**.
+
+### Still broken? Recreate the Vercel project
+
+1. **Add New** → Project → same GitHub repo.
+2. Set **Root Directory** = `apps/admin` **before** first deploy.
+3. Add env vars → Deploy.
+4. Use the new project URL (delete the old broken project if you want).
