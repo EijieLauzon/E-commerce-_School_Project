@@ -1,3 +1,8 @@
+import {
+   allowDebugOtpWithoutSms,
+   debugOtpResponse,
+   isSmsConfigured,
+} from '@/lib/otp-delivery'
 import prisma from '@/lib/prisma'
 import { generateSerial } from '@/lib/serial'
 import { getErrorResponse } from '@/lib/utils'
@@ -59,29 +64,17 @@ export async function POST(req: NextRequest) {
          },
       })
 
-      if (!process.env.SMS_API_KEY || !process.env.SMS_NUMBER) {
-         if (process.env.NODE_ENV === 'development') {
-            console.warn(
-               'SMS provider is not configured. Returning debug OTP in development only.'
-            )
-            return new NextResponse(
-               JSON.stringify({
-                  status: 'success',
-                  phone: normalizedPhone,
-                  debugOTP: OTP,
-                  warning:
-                     'SMS provider is not configured. Using debug OTP in development.',
-               }),
-               {
-                  status: 200,
-                  headers: { 'Content-Type': 'application/json' },
-               }
-            )
-         }
+      if (allowDebugOtpWithoutSms()) {
+         console.warn(
+            `[OTP] SMS not configured; returning on-screen code for ${normalizedPhone}`
+         )
+         return debugOtpResponse({ phone: normalizedPhone, OTP })
+      }
 
+      if (!isSmsConfigured()) {
          return getErrorResponse(
             500,
-            'SMS provider is not configured. Set SMS_API_KEY and SMS_NUMBER in your .env.'
+            'SMS is not configured. Set SMS_API_KEY and SMS_NUMBER in Vercel.'
          )
       }
 

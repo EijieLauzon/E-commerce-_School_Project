@@ -34,8 +34,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             />
          )}
          {debugOTP && (
-            <p className="text-sm text-yellow-700">
-               Debug OTP: <strong>{debugOTP}</strong>
+            <p className="rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-200">
+               Your login code: <strong className="text-lg">{debugOTP}</strong>
+               <span className="mt-1 block text-xs text-amber-200/80">
+                  Email is not configured yet — enter this code below.
+               </span>
             </p>
          )}
          {error && <p className="text-sm text-red-700">{error}</p>}
