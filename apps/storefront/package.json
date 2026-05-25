@@ -5,6 +5,7 @@
       "url": "https://github.com/sesto-dev"
    },
    "license": "MIT",
+   "packageManager": "npm@10.9.2",
    "overrides": {
       "eslint": "8.57.1"
    },

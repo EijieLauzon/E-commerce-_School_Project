@@ -1,63 +1,65 @@
 # Vercel deployment (monorepo)
 
-This repo has **two** Next.js apps. Each needs its **own** Vercel project (or one project with the correct root folder).
+This repo has **two** Next.js apps. Create **two** Vercel projects from the same GitHub repo (or one project per app with the correct root folder).
 
-## Admin CMS (`admin` project on Vercel)
+---
+
+## Storefront (customer shop)
+
+| Setting | Value |
+|--------|--------|
+| **Root Directory** | `apps/storefront` |
+| **Framework Preset** | Next.js |
+| **Build Command** | `npm run build` (default; also in `apps/storefront/vercel.json`) |
+| **Output Directory** | *(leave empty)* |
+| **Install Command** | `npm install --legacy-peer-deps` |
+
+### Environment variables (enable Production + Preview + Development)
+
+| Variable | Required | Notes |
+|----------|----------|--------|
+| `DATABASE_URL` | Yes | PostgreSQL connection string |
+| `JWT_SECRET_KEY` | Yes | Long random string |
+| `NEXT_PUBLIC_URL` | Yes | e.g. `https://your-store.vercel.app` |
+
+Optional: see `apps/storefront/.env.example` (Google OAuth, mail, SMS, Cloudinary).
+
+---
+
+## Admin CMS
 
 | Setting | Value |
 |--------|--------|
 | **Root Directory** | `apps/admin` |
 | **Framework Preset** | Next.js |
-| **Build Command** | `npm run build` (default) |
-| **Output Directory** | *(leave empty — do not set `.next` or `out`)* |
-| **Install Command** | `npm install` (default) |
+| **Output Directory** | *(leave empty)* |
 
-**Production URL:** `admin-….vercel.app` → admin dashboard (login at `/login`).
+### Environment variables (enable Production + Preview + Development)
 
-### Required environment variables
+| Variable | Required |
+|----------|----------|
+| `DATABASE_URL` | Yes |
+| `JWT_SECRET_KEY` | Yes |
 
-Add these in Vercel → **Settings → Environment Variables**:
+Optional: `apps/admin/.env.example`
 
-| Variable | Example |
-|----------|---------|
-| `DATABASE_URL` | `postgresql://user:pass@host:5432/dbname?sslmode=require` |
-| `JWT_SECRET_KEY` | `change-me-to-a-long-random-string-32chars-min` |
+---
 
-**Important:** For each variable, check **all three** boxes:
+## Common issues
 
-- Production  
-- Preview  
-- Development  
+### White page `404: NOT_FOUND`
 
-URLs like `admin-git-main-….vercel.app` are **Preview** deployments. If you only set vars for Production, Preview will show `Internal Server Error` JSON.
+- Wrong **Root Directory** (use `apps/storefront` or `apps/admin`, not repo root).
+- **Output Directory** must be empty.
+- Open **Visit** on a **Ready** deployment only.
 
-After saving env vars, click **Deployments → Redeploy**.
+### JSON `Internal Server Error`
 
-Optional: mail/SMS vars from `apps/admin/.env.example` if you use those features.
+- Missing **`JWT_SECRET_KEY`** or vars only set for Production while using a **Preview** URL (`*-git-main-*.vercel.app`).
+- Enable env vars for **Preview** and redeploy.
 
-## Storefront / shop
+### Build fails on Prisma
 
-| Setting | Value |
-|--------|--------|
-| **Root Directory** | `apps/storefront` |
+- Add **`DATABASE_URL`** before deploy (needed at runtime; dynamic pages no longer require DB at build time).
 
-Same env vars pattern; see `apps/storefront/.env.example`.
-
-## If you see `404: NOT_FOUND` (Vercel white page)
-
-This is **Vercel’s** error (not your app). The deploy has no Next.js routes.
-
-1. **Root Directory** → `apps/admin` (admin project) or `apps/storefront` (shop).  
-   **Not** blank, **not** `agents-convincing-lemming/...`.
-2. **Output Directory** → leave **completely empty** (delete `.next`, `out`, or `public` if set).
-3. **Install Command** → `npm install --legacy-peer-deps` (or use defaults; `apps/admin/vercel.json` sets this).
-4. Test: open `https://YOUR-URL/login` — if that is also 404, settings are still wrong.
-5. **Deployments** → only open **Visit** on a **Ready** (green) deployment.
-6. Add `DATABASE_URL` + `JWT_SECRET_KEY`, then **Redeploy**.
-
-### Still broken? Recreate the Vercel project
-
-1. **Add New** → Project → same GitHub repo.
-2. Set **Root Directory** = `apps/admin` **before** first deploy.
-3. Add env vars → Deploy.
-4. Use the new project URL (delete the old broken project if you want).
+After changing env vars: **Deployments → Redeploy**.

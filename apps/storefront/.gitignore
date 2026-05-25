@@ -1,4 +1,5 @@
 /.next
 /node_modules
+bun.lockb
 
 sw.json

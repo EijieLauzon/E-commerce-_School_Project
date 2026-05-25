@@ -1,6 +1,9 @@
 import Footer from '@/components/native/Footer'
 import Header from '@/components/native/nav/parent'
 
+// Store pages load product/blog/banner data from Prisma at request time.
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardLayout({
    children,
 }: {
