@@ -1,6 +1,8 @@
 import prisma from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
+export { dynamic } from '@/lib/api-route-config'
+
 export async function GET() {
    try {
       const [categories, brands] = await Promise.all([

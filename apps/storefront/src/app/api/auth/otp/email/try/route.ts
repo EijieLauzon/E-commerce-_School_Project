@@ -9,6 +9,8 @@ import { render } from '@react-email/render'
 import { NextRequest, NextResponse } from 'next/server'
 import { ZodError } from 'zod'
 
+export { dynamic } from '@/lib/api-route-config'
+
 export async function POST(req: NextRequest) {
    try {
       const OTP = generateSerial({})

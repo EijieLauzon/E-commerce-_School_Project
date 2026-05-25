@@ -24,6 +24,8 @@ function normalizePhoneNumber(phone: string) {
    return cleaned
 }
 
+export { dynamic } from '@/lib/api-route-config'
+
 export async function POST(req: NextRequest) {
    try {
       const OTP = generateSerial({})

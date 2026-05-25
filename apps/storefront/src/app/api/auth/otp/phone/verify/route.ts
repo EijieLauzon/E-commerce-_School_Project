@@ -22,6 +22,8 @@ function normalizeIranianPhoneNumber(phone: string) {
    return cleaned
 }
 
+export { dynamic } from '@/lib/api-route-config'
+
 export async function POST(req: NextRequest) {
    try {
       const expiryMinutes = 30 * 24 * 60

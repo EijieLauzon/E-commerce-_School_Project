@@ -4,6 +4,8 @@ import { getErrorResponse } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { ZodError } from 'zod'
 
+export { dynamic } from '@/lib/api-route-config'
+
 export async function POST(req: NextRequest) {
    try {
       const expiryMinutes = 30 * 24 * 60

@@ -1,6 +1,8 @@
 import prisma from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
+export { dynamic } from '@/lib/api-route-config'
+
 export async function GET(req: Request) {
    try {
       const userId = req.headers.get('X-USER-ID')
