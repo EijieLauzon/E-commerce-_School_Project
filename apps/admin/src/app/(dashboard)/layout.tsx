@@ -1,5 +1,8 @@
 import Navbar from '@/components/navbar'
 
+// Dashboard pages use Prisma; must not be statically generated at build time.
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardLayout({
    children,
 }: {

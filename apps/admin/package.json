@@ -2,6 +2,9 @@
    "name": "next-prisma-tailwind-ecommerce-cms",
    "version": "0.1.0",
    "private": true,
+   "overrides": {
+      "eslint": "8.57.1"
+   },
    "scripts": {
       "dev": "next dev -p 8888",
       "build": "next build --no-lint",
@@ -66,7 +69,7 @@
       "@types/react": "18.3.11",
       "@types/react-dom": "18.3.1",
       "autoprefixer": "10.4.20",
-      "eslint": "9.12.0",
+      "eslint": "8.57.1",
       "eslint-config-next": "14.2.15",
       "postcss": "8.4.47",
       "prettier": "^3.3.3",
