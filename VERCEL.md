@@ -16,10 +16,24 @@ This repo has **two** Next.js apps. Each needs its **own** Vercel project (or on
 
 ### Required environment variables
 
-- `DATABASE_URL` — PostgreSQL (Neon, Supabase, Vercel Postgres, etc.)
-- `JWT_SECRET_KEY` — any long random string
+Add these in Vercel → **Settings → Environment Variables**:
 
-Optional: mail/SMS/Cloudinary vars from `apps/admin/.env.example` if you use those features.
+| Variable | Example |
+|----------|---------|
+| `DATABASE_URL` | `postgresql://user:pass@host:5432/dbname?sslmode=require` |
+| `JWT_SECRET_KEY` | `change-me-to-a-long-random-string-32chars-min` |
+
+**Important:** For each variable, check **all three** boxes:
+
+- Production  
+- Preview  
+- Development  
+
+URLs like `admin-git-main-….vercel.app` are **Preview** deployments. If you only set vars for Production, Preview will show `Internal Server Error` JSON.
+
+After saving env vars, click **Deployments → Redeploy**.
+
+Optional: mail/SMS vars from `apps/admin/.env.example` if you use those features.
 
 ## Storefront / shop
 

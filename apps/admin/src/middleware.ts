@@ -2,69 +2,67 @@ import { verifyJWT } from '@/lib/jwt'
 import { getErrorResponse } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 
+function isPublicPath(pathname: string) {
+   return (
+      pathname.startsWith('/login') ||
+      pathname.startsWith('/api/auth') ||
+      pathname.startsWith('/_next') ||
+      pathname === '/favicon.ico'
+   )
+}
+
+function isApiPath(pathname: string) {
+   return pathname.startsWith('/api')
+}
+
+function redirectToLogin(req: NextRequest, clearAuthCookies = false) {
+   const res = NextResponse.redirect(new URL('/login', req.url))
+   if (clearAuthCookies) {
+      res.cookies.delete('token')
+      res.cookies.delete('logged-in')
+   }
+   return res
+}
+
 export async function middleware(req: NextRequest) {
-   if (req.nextUrl.pathname.startsWith('/api/auth')) return NextResponse.next()
+   const { pathname } = req.nextUrl
 
-   function isTargetingAPI() {
-      return req.nextUrl.pathname.startsWith('/api')
-   }
+   if (isPublicPath(pathname)) return NextResponse.next()
 
-   function getToken() {
-      let token: string | undefined
-
-      if (req.cookies.has('token')) {
-         token = req.cookies.get('token')?.value
-      } else if (req.headers.get('Authorization')?.startsWith('Bearer ')) {
-         token = req.headers.get('Authorization')?.substring(7)
-      }
-
-      return token
-   }
-
-   const token = getToken()
-
-   if (!token) {
-      if (isTargetingAPI()) return getErrorResponse(401, 'INVALID TOKEN')
-
-      return NextResponse.redirect(new URL('/login', req.url))
-   }
+   const isAPI = isApiPath(pathname)
 
    if (!process.env.JWT_SECRET_KEY) {
       console.error('JWT_SECRET_KEY is not set in environment variables')
-      if (isTargetingAPI()) return getErrorResponse(500, 'Internal Server Error')
-
-      return NextResponse.redirect(new URL('/login', req.url))
+      if (isAPI) return getErrorResponse(500, 'Internal Server Error')
+      return redirectToLogin(req, true)
    }
 
-   const response = NextResponse.next()
+   let token: string | undefined
+
+   if (req.cookies.has('token')) {
+      token = req.cookies.get('token')?.value
+   } else if (req.headers.get('Authorization')?.startsWith('Bearer ')) {
+      token = req.headers.get('Authorization')?.substring(7)
+   }
+
+   if (!token) {
+      if (isAPI) return getErrorResponse(401, 'INVALID TOKEN')
+      return redirectToLogin(req)
+   }
 
    try {
       const { sub } = await verifyJWT<{ sub: string }>(token)
+      const response = NextResponse.next()
       response.headers.set('X-USER-ID', sub)
-   } catch (error) {
-      if (isTargetingAPI()) {
-         return getErrorResponse(401, 'UNAUTHORIZED')
-      }
-
-      const redirect = NextResponse.redirect(new URL(`/login`, req.url))
-      redirect.cookies.delete('token')
-      redirect.cookies.delete('logged-in')
-      return redirect
+      return response
+   } catch {
+      if (isAPI) return getErrorResponse(401, 'UNAUTHORIZED')
+      return redirectToLogin(req, true)
    }
-
-   return response
 }
 
 export const config = {
    matcher: [
-      '/',
-      '/products/:path*',
-      '/banners/:path*',
-      '/orders/:path*',
-      '/categories/:path*',
-      '/payments/:path*',
-      '/codes/:path*',
-      '/users/:path*',
-      '/api/:path*',
+      '/((?!login|api/auth|_next/static|_next/image|favicon.ico).*)',
    ],
 }
