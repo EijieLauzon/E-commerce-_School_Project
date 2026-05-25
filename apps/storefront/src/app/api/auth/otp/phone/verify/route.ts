@@ -22,7 +22,7 @@ function normalizeIranianPhoneNumber(phone: string) {
    return cleaned
 }
 
-export { dynamic } from '@/lib/api-route-config'
+export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
    try {

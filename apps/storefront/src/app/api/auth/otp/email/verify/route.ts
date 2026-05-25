@@ -4,7 +4,7 @@ import { getErrorResponse } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { ZodError } from 'zod'
 
-export { dynamic } from '@/lib/api-route-config'
+export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
    try {

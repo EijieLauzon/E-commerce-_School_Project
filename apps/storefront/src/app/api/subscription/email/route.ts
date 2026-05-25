@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
-export { dynamic } from '@/lib/api-route-config'
+export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
    try {
