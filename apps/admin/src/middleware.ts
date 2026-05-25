@@ -21,15 +21,17 @@ export async function middleware(req: NextRequest) {
       return token
    }
 
-   if (!process.env.JWT_SECRET_KEY) {
-      console.error('JWT secret key is missing')
-      return getErrorResponse(500, 'Internal Server Error')
-   }
-
    const token = getToken()
 
    if (!token) {
       if (isTargetingAPI()) return getErrorResponse(401, 'INVALID TOKEN')
+
+      return NextResponse.redirect(new URL('/login', req.url))
+   }
+
+   if (!process.env.JWT_SECRET_KEY) {
+      console.error('JWT_SECRET_KEY is not set in environment variables')
+      if (isTargetingAPI()) return getErrorResponse(500, 'Internal Server Error')
 
       return NextResponse.redirect(new URL('/login', req.url))
    }
